@@ -1,8 +1,9 @@
 services:
   app:
-    image: astral/uv:python3.14-alpine3.23
+    image: pawprint:dev
     volumes:
       - .:/app
+      - ~/.gnupg:/root/.gnupg
     working_dir: /app
     command: uv run manage.py runserver 0.0.0.0:8080
     ports:
