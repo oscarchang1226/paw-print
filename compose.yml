@@ -4,6 +4,7 @@ services:
     image: pawprint:dev
     volumes:
       - .:/app
+      - ~/.ssh:/root/.ssh
       - ~/.gnupg:/root/.gnupg
     working_dir: /app
     command: uv run manage.py runserver 0.0.0.0:8080
