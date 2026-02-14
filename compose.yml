@@ -1,13 +1,8 @@
 services:
   app:
     container_name: app
-    image: pawprint:dev
-    volumes:
-      - .:/app
-      - ~/.ssh:/root/.ssh
-      - ~/.gnupg:/root/.gnupg
+    image: pawprint:latest
     working_dir: /app
     command: uv run manage.py runserver 0.0.0.0:8080
     ports:
       - "8080:8080"
-    
