@@ -25,3 +25,13 @@ To ensure smooth progress and maintain the link between requirements and technic
   1. **Red**: Run the test and ensure it fails.
   2. **Green**: Write the minimum code necessary to make the test pass.
   3. **Refactor**: Clean up the code while ensuring tests remain green.
+
+## Git Commit Standards
+- **Format**: Start the first line with the issue code (e.g., `PWPT-1:`) followed by a concise summary.
+- **Style**: Follow Google's commit message standard.
+- **Constraints**: Every line of the commit message must be less than 50 characters.
+- **Command**: `docker exec app git commit <...>`
+
+## Running Tests
+- Use Docker to run tests to ensure environment consistency.
+- **Command**: `docker exec app uv run python manage.py test <app_name>`

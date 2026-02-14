@@ -41,13 +41,15 @@ Follow the methodology below step by step:
 - Group tasks into **development phases**.  
 - Organize phases logically (e.g., Setup → Core Features → Advanced Features → Testing & QA).  
 ---
-### Step 4: Update `.junie/guidelines.md`
-- Add **concise technical instructions** on how to work with the `docs/tasks.md` checklist.  
+### Step 4: Create/Update `.junie/guidelines.md`
+- Add **concise technical instructions** on how to work with the `docs/tasks.md` checklist, follow TDD, maintain git standards, and run tests.  
 - Instructions should include:  
-  - Mark tasks as `[x]` when completed.  
-  - Keep phases intact but add new tasks if needed.  
-  - Ensure every new or modified task stays linked to a requirement and plan item.  
-  - Keep formatting consistent with the existing style.  
+  - **Task Management**: Mark tasks as `[x]` when completed, maintain links to plan items and requirements, and keep phases intact.  
+  - **Synchronization**: Ensure `docs/requirements.md`, `docs/plan.md`, and `docs/tasks.md` are always in sync.  
+  - **TDD Guidelines**: Explicitly mention the Red-Green-Refactor cycle.  
+  - **Git Commit Standards**: Define the standard (Issue code prefix, Google style, <50 chars per line).  
+  - **Running Tests**: Specify the command to run tests via Docker: `docker exec app uv run python manage.py test <app_name>`.  
+  - **Formatting**: Keep formatting consistent with the existing style (e.g., 3-space indentation for sub-points).  
 ---
 ## Input:
 [Ask user which issue they want to solve from `gh issue list`; The user should provide either the id or title of the issue.]  
@@ -55,4 +57,4 @@ Follow the methodology below step by step:
 1. `docs/requirements.md` – structured requirements document  
 2. `docs/plan.md` – implementation plan with priorities and links  
 3. `docs/tasks.md` – detailed enumerated task list grouped into phases  
-4. `.junie/guidelines.md` – updated concise instructions for working with the task list
+4. `.junie/guidelines.md` – updated concise instructions for working with the task list, TDD, git standards, and testing
