@@ -5,7 +5,8 @@ RUN apk add --no-cache \
     git \
     gnupg \
     pinentry \
-    pinentry-tty
+    pinentry-tty \
+    openssh-client
 
 WORKDIR /app
 
