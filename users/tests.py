@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.contrib import admin
 
 class UserModelTest(TestCase):
     def test_user_model_is_custom(self):
@@ -37,3 +38,16 @@ class UserModelTest(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
+
+class UserAdminTest(TestCase):
+    def test_user_model_registered_in_admin(self):
+        """Test that the custom User model is registered in admin."""
+        User = get_user_model()
+        self.assertIn(User, admin.site._registry)
+        
+    def test_user_admin_search_fields(self):
+        """Test that UserAdmin has expected search fields."""
+        User = get_user_model()
+        user_admin = admin.site._registry[User]
+        self.assertIn('email', user_admin.search_fields)
+        self.assertIn('username', user_admin.search_fields)
