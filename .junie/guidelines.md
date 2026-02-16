@@ -30,6 +30,7 @@ To ensure smooth progress and maintain the link between requirements and technic
 - **Format**: Start the first line with the issue code (e.g., `PWPT-1:`) followed by a concise summary.
 - **Style**: Follow Google's commit message standard.
 - **Constraints**: Every line of the commit message must be less than 50 characters.
+- **Branching**: The branch to create in this project will always be `PWPT-{issue id}`.
 - **Command**: `docker exec app git commit <...>`
 
 ## Running Tests
