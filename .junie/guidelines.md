@@ -31,7 +31,10 @@ To ensure smooth progress and maintain the link between requirements and technic
 - **Style**: Follow Google's commit message standard.
 - **Constraints**: Every line of the commit message must be less than 50 characters.
 - **Branching**: The branch to create in this project will always be `PWPT-{issue id}`.
-- **Command**: `docker exec app git commit <...>`
+- **Git Execution**: 
+   - **Container**: ONLY `git commit` must be run inside the container.
+     - Command: `docker exec -it app sh -l -c "git commit <...>"`
+   - **Host**: All other `git` commands (push, pull, branch, checkout, etc.) and all `gh` commands (pr create, issue edit, etc.) MUST be run on the host machine.
 
 ## Running Tests
 - Use Docker to run tests to ensure environment consistency.
