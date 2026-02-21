@@ -165,3 +165,6 @@ Thumbs.db
 
 # Container
 compose.override.yml
+
+# Development specific
+docs/

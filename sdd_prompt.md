@@ -47,7 +47,8 @@ Follow the methodology below step by step:
   - **Task Management**: Mark tasks as `[x]` when completed, maintain links to plan items and requirements, and keep phases intact.  
   - **Synchronization**: Ensure `docs/requirements.md`, `docs/plan.md`, and `docs/tasks.md` are always in sync.  
   - **TDD Guidelines**: Explicitly mention the Red-Green-Refactor cycle.  
-  - **Git Commit Standards**: Define the standard (Issue code prefix, Google style, <50 chars per line). Specify that ONLY `git commit` runs in the container via `docker exec -it app sh -l -c "git commit <...>"`, while all other `git` and `gh` commands run on the host.
+  - **Git Commit Standards**: Define the standard (Issue code prefix, Google style, <50 chars per line). Specify that ONLY `git commit` runs in the container via `docker exec -it app sh -l -c "git commit <...>"`, while all other `git` and `gh` commands run on the host.  
+  - **Post-Implementation**: Always push the branch, create a PR, and update the GitHub project item status to "In review" (using `gh project item-edit`) before finishing an issue.
   - **Running Tests**: Specify the command to run tests via Docker: `docker exec app uv run python manage.py test <app_name>`.  
   - **Formatting**: Keep formatting consistent with the existing style (e.g., 3-space indentation for sub-points).  
 ---

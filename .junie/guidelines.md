@@ -34,7 +34,12 @@ To ensure smooth progress and maintain the link between requirements and technic
 - **Git Execution**: 
    - **Container**: ONLY `git commit` must be run inside the container.
      - Command: `docker exec -it app sh -l -c "git commit <...>"`
-   - **Host**: All other `git` commands (push, pull, branch, checkout, etc.) and all `gh` commands (pr create, issue edit, etc.) MUST be run on the host machine.
+   - **Host**: All other `git` commands (push, pull, branch, checkout, etc.) and all `gh` commands (pr create, issue edit, project item-edit, etc.) MUST be run on the host machine.
+
+## Post-Implementation
+- **Branch Pushing**: Always push the current branch to the remote repository.
+- **PR Creation**: Create a Pull Request (PR) and link it to the issue (e.g., "Closes #5").
+- **Project Update**: Use `gh project item-edit` to update the status of the item in the project board to "In review".
 
 ## Running Tests
 - Use Docker to run tests to ensure environment consistency.
