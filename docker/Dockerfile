@@ -8,6 +8,8 @@ RUN apk add --no-cache \
     pinentry-tty \
     openssh-client
 
+COPY docker/.profile /root/.profile
+
 WORKDIR /app
 
 CMD ["uv", "run", "manage.py", "runserver", "0.0.0.0:8080"]
