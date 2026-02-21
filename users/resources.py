@@ -50,13 +50,17 @@ class UserResource(resources.ModelResource):
             first_name = row_list[first_name_idx].strip()
             last_name = row_list[last_name_idx].strip() if last_name_idx is not None else ''
             email = row_list[email_idx].strip().lower()
+            provided_username = row_list[username_idx].strip()
 
             # Logic for username and email:
-            # 1. If email is given, username is before @
-            # 2. If email is not given, username is first.last or first
-            # 3. If email is not given, email is username@coachotennis.com
+            # 1. If username is given, don't overwrite
+            # 2. If email is given, username is before @
+            # 3. If email is not given, username is first.last or first
+            # 4. If email is not given, email is username@coachotennis.com
 
-            if email:
+            if provided_username:
+                username = provided_username
+            elif email:
                 if '@' in email:
                     username = email.split('@')[0]
                 else:

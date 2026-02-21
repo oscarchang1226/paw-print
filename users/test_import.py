@@ -52,6 +52,25 @@ class UserImportExportTest(TestCase):
         self.assertEqual(user.username, 'coach.o')
         self.assertEqual(user.email, 'coach.o@coachotennis.com')
 
+    def test_import_user_with_explicit_username(self):
+        """Test that an explicit username is NOT overwritten by email-derived username."""
+        self.dataset.append(['Oscar', 'Chang', 'oscarchang1226@gmail.com'])
+        # Add username explicitly
+        self.dataset.headers.append('username')
+        # Since tablib Dataset objects are immutable in terms of row structure once appended,
+        # we have to clear and rebuild or use a new one. 
+        # But for the purpose of this test, let's just create a new dataset with correct headers.
+        dataset = Dataset()
+        dataset.headers = ['first_name', 'last_name', 'email', 'username']
+        dataset.append(['Oscar', 'Chang', 'oscarchang1226@gmail.com', 'o_chang'])
+        
+        result = self.resource.import_data(dataset, dry_run=False)
+        
+        self.assertFalse(result.has_errors())
+        user = User.objects.get(first_name='Oscar')
+        self.assertEqual(user.username, 'o_chang')
+        self.assertEqual(user.email, 'oscarchang1226@gmail.com')
+
     def test_import_user_duplicate_username(self):
         """Test that duplicate username blocks import or is reported."""
         User.objects.create(username='duplicate.user', first_name='Existing')
