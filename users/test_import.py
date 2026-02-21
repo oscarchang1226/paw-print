@@ -12,7 +12,7 @@ class UserImportExportTest(TestCase):
         self.dataset.headers = ['first_name', 'last_name', 'email']
 
     def test_import_user_basic(self):
-        """Test basic import with all fields provided."""
+        """Test basic import with all fields provided. Username from email."""
         self.dataset.append(['John', 'Doe', 'JOHN.DOE@example.com'])
         result = self.resource.import_data(self.dataset, dry_run=False)
         
@@ -23,35 +23,45 @@ class UserImportExportTest(TestCase):
         self.assertEqual(user.email, 'john.doe@example.com')
         self.assertEqual(user.username, 'john.doe')
 
+    def test_import_user_username_from_email_prefix(self):
+        """Test that username is extracted from the email prefix if provided."""
+        self.dataset.append(['John', 'Doe', 'johnd@example.com'])
+        result = self.resource.import_data(self.dataset, dry_run=False)
+        
+        self.assertFalse(result.has_errors())
+        user = User.objects.get(first_name='John')
+        self.assertEqual(user.username, 'johnd')
+
     def test_import_user_missing_last_name(self):
-        """Test username generation when last_name is missing."""
-        self.dataset.append(['Jane', '', 'jane@example.com'])
+        """Test username generation when last_name and email are missing."""
+        self.dataset.append(['Jane', '', ''])
         result = self.resource.import_data(self.dataset, dry_run=False)
         
         self.assertFalse(result.has_errors())
         user = User.objects.get(first_name='Jane')
         self.assertEqual(user.username, 'jane')
+        self.assertEqual(user.email, 'jane@coachotennis.com')
 
-    def test_import_user_missing_email(self):
-        """Test email generation when email is missing."""
+    def test_import_user_missing_email_with_last_name(self):
+        """Test email and username generation when email is missing but last_name exists."""
         self.dataset.append(['Coach', 'O', ''])
         result = self.resource.import_data(self.dataset, dry_run=False)
         
         self.assertFalse(result.has_errors())
         user = User.objects.get(first_name='Coach')
-        self.assertEqual(user.email, 'coach@coachotennis.com')
+        self.assertEqual(user.username, 'coach.o')
+        self.assertEqual(user.email, 'coach.o@coachotennis.com')
 
     def test_import_user_duplicate_username(self):
         """Test that duplicate username blocks import or is reported."""
         User.objects.create(username='duplicate.user', first_name='Existing')
         
-        self.dataset.append(['Duplicate', 'User', 'new@example.com'])
+        # This will result in username 'duplicate.user' because of the email
+        self.dataset.append(['Duplicate', 'User', 'duplicate.user@example.com'])
         result = self.resource.import_data(self.dataset, dry_run=True)
         
         # In django-import-export, duplicates are usually identified as 'skip' or 'update'
-        # based on import_id_fields. But our requirement says "block import until admin acknowledges"
-        # and "Default policy: block import and require admin to fix file".
-        # We want to ensure it's detected.
+        # based on import_id_fields.
         row_result = result.rows[0]
         self.assertEqual(row_result.import_type, 'skip') # Default behavior if it exists
 
@@ -59,9 +69,10 @@ class UserImportExportTest(TestCase):
         """Test that duplicate email blocks import or is reported."""
         User.objects.create(username='Other', email='dup@example.com', first_name='Existing')
         
+        # This will result in username 'new' but email 'dup@example.com' which is duplicate
         self.dataset.append(['New', 'User', 'dup@example.com'])
         result = self.resource.import_data(self.dataset, dry_run=True)
         
-        # We need custom logic in Resource to detect email duplicates if username is unique
+        # We have custom logic in Resource to detect email duplicates
         row_result = result.rows[0]
         self.assertTrue(row_result.import_type in ['skip', 'error', 'invalid'])
