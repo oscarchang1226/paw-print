@@ -20,7 +20,7 @@ class SessionImportExportTest(TestCase):
 
     def test_import_session_basic(self):
         """Test basic session import."""
-        starts_at = timezone.now() + timedelta(days=1)
+        starts_at = (timezone.now() + timedelta(days=1)).replace(microsecond=0)
         self.dataset.append([
             starts_at.strftime('%Y-%m-%d %H:%M:%S'), 60, 10, 'SCHEDULED', 'coach1',
             'Carrot Park', 'Some notes', '', '', ''
@@ -42,7 +42,7 @@ class SessionImportExportTest(TestCase):
 
     def test_import_session_cancelled_missing_reason(self):
         """Test that cancelled session requires a reason."""
-        starts_at = timezone.now() + timedelta(days=1)
+        starts_at = (timezone.now() + timedelta(days=1)).replace(microsecond=0)
         self.dataset.append([
             starts_at.strftime('%Y-%m-%d %H:%M:%S'), 60, 10, 'CANCELLED', 'coach1',
             'Carrot Park', 'Some notes', '', '', ''
@@ -56,7 +56,7 @@ class SessionImportExportTest(TestCase):
 
     def test_import_session_coach_not_found(self):
         """Test that non-existent coach blocks import."""
-        starts_at = timezone.now() + timedelta(days=1)
+        starts_at = (timezone.now() + timedelta(days=1)).replace(microsecond=0)
         self.dataset.append([
             starts_at.strftime('%Y-%m-%d %H:%M:%S'), 60, 10, 'SCHEDULED', 'nonexistent',
             'Carrot Park', '', '', '', ''

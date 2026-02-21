@@ -120,12 +120,20 @@ class SessionAttendeeResource(resources.ModelResource):
 
     def get_or_init_instance(self, instance_loader, row):
         """Manually find SessionAttendee based on session and user usernames."""
+        from django.utils.dateparse import parse_datetime
+        from django.utils import timezone
+        import datetime
         dt_str = row.get('session_datetime')
         coach_un = row.get('coach_username')
         user_un = row.get('user_username')
         
+        # Parse datetime and ensure it's aware
+        dt = parse_datetime(dt_str)
+        if dt and timezone.is_naive(dt):
+            dt = timezone.make_aware(dt)
+
         try:
-            session = Session.objects.get(starts_at=dt_str, coach__username=coach_un)
+            session = Session.objects.get(starts_at=dt, coach__username=coach_un)
             user = User.objects.get(username=user_un)
             instance = SessionAttendee.objects.get(session=session, user=user)
             return instance, False

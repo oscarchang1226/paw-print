@@ -50,8 +50,9 @@ class SessionAttendeeImportExportTest(TestCase):
 
     def test_import_attendee_session_not_found(self):
         """Test that non-existent session blocks import."""
+        starts_at = (timezone.now() - timedelta(days=365)).replace(microsecond=0)
         self.dataset.append([
-            '2026-01-01 00:00:00', 'coach1', 'user1',
+            starts_at.strftime('%Y-%m-%d %H:%M:%S'), 'coach1', 'user1',
             'CONFIRMED', 'ATTENDED', 'PAID', '', ''
         ])
         result = self.resource.import_data(self.dataset, dry_run=True)
