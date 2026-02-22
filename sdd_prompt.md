@@ -47,7 +47,9 @@ Follow the methodology below step by step:
   - **Task Management**: Mark tasks as `[x]` when completed, maintain links to plan items and requirements, and keep phases intact.  
   - **Synchronization**: Ensure `docs/requirements.md`, `docs/plan.md`, and `docs/tasks.md` are always in sync.  
   - **TDD Guidelines**: Explicitly mention the Red-Green-Refactor cycle.  
-  - **Git Commit Standards**: Define the standard (Issue code prefix, Google style, <50 chars per line). Specify that ONLY `git commit` runs in the container via `docker exec -it app sh -l -c "git commit <...>"`, while all other `git` and `gh` commands run on the host.  
+  - **Git Commit Standards**: Define the standard (Issue code prefix, Google style, <50 chars per line). Specify that ONLY `git commit` runs in the container via `docker exec -it app sh -l -c "git commit <...>"`, while all other `git` and `gh` commands run on the host. 
+    - **Selective Staging**: NEVER use `git add .` or `git add -A`. Manually stage only the files you have worked on. DO NOT include any files in the `docs/` directory in your commits unless you explicitly intended to update the documentation or the task list for that issue.
+    - **GPG Signing**: Ensure GPG signing is enabled and configured in the environment before committing.
   - **Post-Implementation**: Always push the branch, create a PR, and update the GitHub project item status to "In review" (using `gh project item-edit`) before finishing an issue.
     - Command for PR: `gh pr create --base main --head PWPT-<id> --title "PWPT-<id>: <summary>" --body "Closes #<id>"`
     - Command for Status Update: `gh project item-edit --id <item-id> --project-id <project-id> --field-id <field-id> --single-select-option-id <option-id>`

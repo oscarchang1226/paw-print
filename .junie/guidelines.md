@@ -35,6 +35,8 @@ To ensure smooth progress and maintain the link between requirements and technic
    - **Container**: ONLY `git commit` must be run inside the container.
      - Command: `docker exec -it app sh -l -c "git commit <...>"`
    - **Host**: All other `git` commands (push, pull, branch, checkout, etc.) and all `gh` commands (pr create, issue edit, project item-edit, etc.) MUST be run on the host machine.
+   - **Selective Staging**: NEVER use `git add .` or `git add -A`. Manually stage only the files you have worked on. DO NOT include any files in the `docs/` directory in your commits unless you explicitly intended to update the documentation or the task list for that issue.
+   - **GPG Signing**: Ensure GPG signing is enabled and configured in the environment before committing.
    - **Project Status Updates**: Use `gh project item-edit --id <item-id> --project-id <project-id> --field-id <status-field-id> --single-select-option-id <option-id>` to update the status of the issue in the project board.
    - **Status Transitions**:
      - When starting an issue: Change to "In progress".
