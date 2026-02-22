@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'import_export',
     'users',
     'coach_sessions',
 ]
@@ -119,3 +120,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'users.User'
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True

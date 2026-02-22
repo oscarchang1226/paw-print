@@ -22,6 +22,13 @@ class Session(models.Model):
         ('COMPLETED', 'Completed'),
     ]
 
+    coach = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='coached_sessions',
+        null=True, # Temporarily nullable for migration
+        blank=True
+    )
     starts_at = models.DateTimeField()
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
     location = models.CharField(max_length=255)
