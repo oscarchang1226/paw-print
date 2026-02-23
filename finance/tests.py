@@ -2,7 +2,7 @@ import uuid
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from finance.models import Account
+from finance.models import Account, TransactionImportSource
 
 User = get_user_model()
 
@@ -41,6 +41,49 @@ class AccountModelTest(TestCase):
     def test_default_currency(self):
         account = Account.objects.create(name='Default Currency', type='BANK', created_by=self.user)
         self.assertEqual(account.currency, 'USD')
+
+class TransactionImportSourceModelTest(TestCase):
+    def test_source_creation(self):
+        source = TransactionImportSource.objects.create(
+            name='Chase Checking',
+            date_column='Date',
+            description_column='Description',
+            amount_column='Amount',
+            date_format='%m/%d/%Y'
+        )
+        self.assertIsInstance(source.id, uuid.UUID)
+        self.assertEqual(source.delimiter, ',')
+        self.assertTrue(source.has_header)
+        self.assertEqual(source.name, 'Chase Checking')
+
+    def test_unique_name(self):
+        TransactionImportSource.objects.create(
+            name='Unique Source',
+            date_column='Date',
+            description_column='Description',
+            amount_column='Amount',
+            date_format='%m/%d/%Y'
+        )
+        source2 = TransactionImportSource(
+            name='Unique Source',
+            date_column='d',
+            description_column='desc',
+            amount_column='amt',
+            date_format='%Y'
+        )
+        with self.assertRaises(ValidationError):
+            source2.full_clean()
+
+    def test_category_column_nullable(self):
+        source = TransactionImportSource.objects.create(
+            name='No Category Source',
+            date_column='Date',
+            description_column='Description',
+            amount_column='Amount',
+            date_format='%m/%d/%Y',
+            category_column=None
+        )
+        self.assertIsNone(source.category_column)
 
 class AccountAdminTest(TestCase):
     def setUp(self):
