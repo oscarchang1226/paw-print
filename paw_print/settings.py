@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'import_export',
     'users',
     'coach_sessions',
+    'finance',
 ]
 
 MIDDLEWARE = [
